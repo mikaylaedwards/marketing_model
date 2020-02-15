@@ -1,0 +1,60 @@
+<html>
+<head>
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.css"
+    rel="stylesheet" type="text/css">
+
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
+
+
+</head>
+<body>
+<H1>Conversion Plot</H1>
+
+<form action="/">
+<select name="feature_name">
+    {% for feature in feature_names %}
+        {% if feature == current_feature_name %}
+            <option selected value="{{ feature }}">{{ feature }}</option> 
+        {% else %} 
+            <option value="{{ feature }}">{{ feature }}</option> 
+        {% endif %}
+    {% endfor %}
+</select>
+<input type="submit">
+</form>
+
+{{ script|safe }}
+{{ div|safe }}
+
+
+</body>
+<form action="/">
+    <div style="text-align: center;">
+      <br>
+        <h1 class="headertext">Chat Classifier</h1>
+        <br>
+        Input a word or phrase to get its toxicity levels:
+        <br>
+        <br>
+        <center>
+          <input align = "center" type="text" name="chat_in" autofocus="autofocus" value="{{x_input}}" maxlength="500" id="rcorners2">
+        </center>
+    <br>
+    <!-- Submit button -->
+    <center>
+    <input align="center" type="submit" value="Submit" method="get" id="rcorners1">
+  </center>
+    <br>
+
+  </form>
+    </div>
+    <!-- {% for p in prediction %}
+      <br>  {{p['name']}}:{{ (100*p['prob']) | round }}%
+    {% endfor %} -->
+  </p>
+</html>
