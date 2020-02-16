@@ -9,7 +9,7 @@ import pickle
 import pandas as pd
 
 marketing=pd.read_csv("data/marketing_new.csv",index_col=0)
-X = marketing[['marketing_channel','subscribing_channel','variant']]
+X = marketing[['marketing_channel','subscribing_channel','age_group']]
 y = marketing['converted']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
@@ -26,14 +26,17 @@ preprocessor = ColumnTransformer(
         ('cat', categorical_transformer, categorical_features)])
 
 
-def make_preds(classifier):
+def fit_model(classifier):
     pipe = Pipeline(steps=[('preprocessor', preprocessor),('classifier', classifier)])
     model=pipe.fit(X_train, y_train)
-    print(classifier)
-    print("model score: ",pipe.score(X_test, y_test))
-    y_pred = pipe.predict(X_test)
-    return model,y_pred
+    return pipe,model
 
-dt_model,dt_pred=make_preds(DecisionTreeClassifier(max_depth=4))
+pipeline,model=fit_model(DecisionTreeClassifier(max_depth=4))
+column_names = model.named_steps['preprocessor'].transformers_[0][1]\
+    .named_steps['onehot'].get_feature_names(categorical_features)
 
-pickle.dump(dt_model,open('model.pkl','wb'))
+
+
+
+pickle.dump(model,open('model.pkl','wb'))
+pickle.dump(column_names,open('model_columns.pkl','wb'))

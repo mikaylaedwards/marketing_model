@@ -1,14 +1,16 @@
 from threading import Thread
-
+import requests
 from flask import Flask, render_template,request
 from tornado.ioloop import IOLoop
 import pandas as pd
+import numpy as np
 from bokeh.plotting import figure
 from bokeh.embed import components,server_document
 from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.server.server import Server
 from bokeh.palettes import RdBu3,Spectral5
 from bokeh.transform import factor_cmap
+import pickle
 
 app = Flask(__name__)
 
@@ -53,24 +55,42 @@ def make_plot(df,col_name):
     p.outline_line_color = None
     
     return p
-
-# Index page
+    
+    
+    # Index page
 @app.route('/')
 def index():
-    current_feature_name = request.args.get("feature_name")
-    if current_feature_name == None:
-        current_feature_name = "marketing_channel"
-
-    # Create the plot
+    current_feature_name = "marketing_channel"
     plot = make_plot(marketing,current_feature_name)
-
     script, div = components(plot)
     return render_template("m_index.html", script=script, div=div,
-        feature_names=feature_names,  current_feature_name=current_feature_name)
+                           feature_names=feature_names,  current_feature_name=current_feature_name)
 
-# With debug=True, Flask server will auto-reload 
-# when there are code changes
+#Model Predictions
+def get_predictions(input_form):
+    print(input_form)
+    loaded_model=pickle.load(open("model.pkl","rb"))
+    result = loaded_model.predict(input_form)
+    return result[0]
+    
+
+
+@app.route('/result',methods = ['POST','GET'])
+def result():
+     if request.method == 'GET':
+        json = request.args.to_dict()
+        print(json)
+        query = pd.DataFrame([json])
+        result = get_predictions(query)
+        if result=='True':
+            prediction='Model predicts user will convert'
+        else:
+             prediction='Model predicts user will not convert'
+        return render_template("result.html",prediction=prediction)
+        
+
+
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=12345, debug=True)
 
 

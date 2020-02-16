@@ -15,46 +15,46 @@
 <body>
 <H1>Conversion Plot</H1>
 
-<form action="/">
-<select name="feature_name">
-    {% for feature in feature_names %}
-        {% if feature == current_feature_name %}
-            <option selected value="{{ feature }}">{{ feature }}</option> 
-        {% else %} 
-            <option value="{{ feature }}">{{ feature }}</option> 
-        {% endif %}
-    {% endfor %}
-</select>
-<input type="submit">
-</form>
-
 {{ script|safe }}
 {{ div|safe }}
 
 
-</body>
-<form action="/">
-    <div style="text-align: center;">
-      <br>
-        <h1 class="headertext">Chat Classifier</h1>
-        <br>
-        Input a word or phrase to get its toxicity levels:
-        <br>
-        <br>
-        <center>
-          <input align = "center" type="text" name="chat_in" autofocus="autofocus" value="{{x_input}}" maxlength="500" id="rcorners2">
-        </center>
-    <br>
-    <!-- Submit button -->
-    <center>
-    <input align="center" type="submit" value="Submit" method="get" id="rcorners1">
-  </center>
-    <br>
+<body>
+    <h3>Predict Conversion</h3>
 
+<div>
+  <form action="/result",method="POST">
+    <label for="marketing_channel">Marketing Channel</label>
+    <select id="marketing_channel" name="marketing_channel">
+        <option value="Email">Email</option>
+        <option value="House Ads">House Ads</option>
+        <option value="Facebook">Facebook</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Push">Push</option>
+    </select>
+    <br>
+    <label for="subscribing_channel">Subscribing Channel</label>
+    <select id="subscribing_channel" name="subscribing_channel">
+        <option value="Email">Email</option>
+        <option value="House Ads">House Ads</option>
+        <option value="Facebook">Facebook</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Push">Push</option>
+    </select>
+    <br>
+    <label for="age_group">Age Group</label>
+    <select id="age_group" name="age_group">
+        <option value="0-18 years">0-18 years</option>
+        <option value="19-24 years">19-24 years</option>
+        <option value="24-30 years">24-30 years</option>
+        <option value="30-36 years">30-36 years</option>
+        <option value="36-45 years">36-45 years</option>
+        <option value="45-55 years">45-55 years</option>
+        <option value="55+ years">55+ years</option>
+    </select>
+      <br>
+    <input type="submit" value="Submit">
   </form>
-    </div>
-    <!-- {% for p in prediction %}
-      <br>  {{p['name']}}:{{ (100*p['prob']) | round }}%
-    {% endfor %} -->
-  </p>
+</div>
+</body>
 </html>
