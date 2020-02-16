@@ -1,6 +1,6 @@
 from flask import Flask, render_template,request
 import pandas as pd
-from sklearn.tree import DecisionTreeClassifier
+import sklearn
 import numpy as np
 from bokeh.plotting import figure
 from bokeh.embed import components,server_document
