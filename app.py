@@ -1,7 +1,5 @@
-from threading import Thread
-import requests
+
 from flask import Flask, render_template,request
-from tornado.ioloop import IOLoop
 import pandas as pd
 import numpy as np
 from bokeh.plotting import figure
