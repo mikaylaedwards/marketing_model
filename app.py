@@ -42,7 +42,7 @@ def make_plot(df,col_name):
 
     group_cmap = factor_cmap(col_name, palette=Spectral5, factors=sorted(grouped[col_name].unique()))
 
-    title="Conversion by: " + col_name
+    title="Conversion by " + col_name
     p = figure(plot_height=350, x_range=group, title=title)
 
     p.vbar(x=col_name, top='num_converted', width=1,
@@ -66,12 +66,23 @@ def index():
     return render_template("m_index.html", script=script, div=div,
                            feature_names=feature_names,  current_feature_name=current_feature_name)
 
+
+
 #Model Predictions
-def get_predictions(input_form):
-    print(input_form)
+def get_predictions(query):
     loaded_model=pickle.load(open("model.pkl","rb"))
-    result = loaded_model.predict(input_form)
-    return result[0]
+    p=loaded_model.predict_proba(query)
+    p=tuple(p[0,])
+    if p[0]>.5:
+        result= "False"
+        prob=p[0]
+    else:
+        result= "True"
+        prob=p[1]
+    
+    prob=str(round(prob*100,2))+'%'
+    
+    return result,prob
     
 
 
@@ -81,12 +92,14 @@ def result():
         json = request.args.to_dict()
         print(json)
         query = pd.DataFrame([json])
-        result = get_predictions(query)
+        result,prob = get_predictions(query)
+        prediction='Model predicts: ' + result
         if result=='True':
-            prediction='Model predicts user will convert'
+            probability="User will convert with probability: " + prob
         else:
-             prediction='Model predicts user will not convert'
-        return render_template("result.html",prediction=prediction)
+             probability="User will not convert with probability: " + prob
+                
+        return render_template("result.html",prediction=prediction,probability=probability)
         
 
 
