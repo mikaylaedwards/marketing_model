@@ -2,4 +2,4 @@ flask
 pandas
 bokeh
 numpy
-sklearn
+sklearn==0.21.2
