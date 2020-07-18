@@ -10,10 +10,9 @@ The code to create the model and serialize it can be found in model.py. It inclu
 The Flask app is created in app.py. This app first handles input from the user and then deserializes the model to make predictions on it. 
 This is what the deployment looks like: 
 
-![deployed](exploratory\deployed.PNG)
+![deployed](exploratory/deployed.PNG)
 
 After submitting the input, the app uses the model to make a prediction and serves a response:
 
-![response](exploratory\deployed_response.PNG)
+![response](exploratory/deployed_response.PNG)
 
-An exploratory notebook with additional data exploration is included in exploratory/.
